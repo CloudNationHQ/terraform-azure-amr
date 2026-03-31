@@ -40,9 +40,9 @@ module "kv" {
   naming = local.naming
 
   vault = {
-    name                = module.naming.key_vault.name_unique
-    location            = module.rg.groups.demo.location
-    resource_group_name = module.rg.groups.demo.name
+    name                     = module.naming.key_vault.name_unique
+    location                 = module.rg.groups.demo.location
+    resource_group_name      = module.rg.groups.demo.name
     purge_protection_enabled = true
 
     keys = {
@@ -67,7 +67,7 @@ module "rbac" {
   role_assignments = {
     crypto_user = {
       display_name = module.identity.config.name
-      type  = "ServicePrincipal"
+      type         = "ServicePrincipal"
       roles = {
         "Key Vault Crypto User" = {
           scopes = {
@@ -78,7 +78,7 @@ module "rbac" {
     }
   }
 
-  depends_on = [ module.identity ]
+  depends_on = [module.identity]
 }
 
 module "cache" {

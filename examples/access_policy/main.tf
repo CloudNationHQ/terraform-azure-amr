@@ -33,7 +33,7 @@ module "cache" {
 
     access_policy_assignments = {
       owner = {
-        object_id          = data.azurerm_client_config.current.object_id
+        object_id = data.azurerm_client_config.current.object_id
       }
     }
   }

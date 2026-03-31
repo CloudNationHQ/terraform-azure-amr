@@ -34,7 +34,7 @@ variable "instance" {
     }))
 
     access_policy_assignments = optional(map(object({
-      object_id          = string
+      object_id = string
     })), {})
 
     geo_replication = optional(object({
