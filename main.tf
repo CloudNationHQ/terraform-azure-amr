@@ -62,8 +62,8 @@ resource "azurerm_managed_redis" "this" {
 resource "azurerm_managed_redis_access_policy_assignment" "assignments" {
   for_each = var.instance.access_policy_assignments
 
-  managed_redis_id   = azurerm_managed_redis.this.id
-  object_id          = each.value.object_id
+  managed_redis_id = azurerm_managed_redis.this.id
+  object_id        = each.value.object_id
 }
 
 resource "azurerm_managed_redis_geo_replication" "geo_replication" {
