@@ -1,12 +1,20 @@
-# $ResourceName
+# Azure Managed Redis
 
- This terraform module simplifies the creation and management of azure $ResourcName resources, providing customizable options for access policies, key and secret management, and auditing, all managed through code.
+This terraform module simplifies the creation and management of azure managed redis instances, providing customizable options for geo-replication, access policy assignments, and customer-managed key encryption, all managed through code.
 
 ## Features
 
-Capability to...
+Supports multiple sku tiers across balanced, memory optimized, compute optimized, and flash optimized workload profiles.
 
-Includes support for...
+Geo-replication support for cross-region redundancy with configurable group membership.
+
+Access policy assignments for fine-grained authorization control over redis data plane access.
+
+Customer managed key encryption via azure key vault with user assigned identity support.
+
+Managed identity support for secure, credential-free authentication to dependent services.
+
+Configurable redis modules including RediSearch, RedisJSON, RedisBloom, and RedisTimeSeries.
 
 Utilization of terratest for robust validation.
 
@@ -29,7 +37,7 @@ The following providers are used by this module:
 
 The following resources are used by this module:
 
-- [azurerm_managed_redis.cache](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) (resource)
+- [azurerm_managed_redis.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) (resource)
 - [azurerm_managed_redis_access_policy_assignment.assignments](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_access_policy_assignment) (resource)
 - [azurerm_managed_redis_geo_replication.geo_replication](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_geo_replication) (resource)
 
@@ -37,7 +45,7 @@ The following resources are used by this module:
 
 The following input variables are required:
 
-### <a name="input_cache"></a> [cache](#input\_cache)
+### <a name="input_instance"></a> [instance](#input\_instance)
 
 Description: contains managed redis cache related configuration
 
@@ -79,8 +87,6 @@ object({
 
     access_policy_assignments = optional(map(object({
       object_id          = string
-      object_id_alias    = string
-      access_policy_name = string
     })), {})
 
     geo_replication = optional(object({
@@ -133,13 +139,13 @@ The following outputs are exported:
 
 Description: contains all access policy assignments
 
-### <a name="output_cache"></a> [cache](#output\_cache)
-
-Description: contains all managed redis cache configuration
-
 ### <a name="output_geo_replication"></a> [geo\_replication](#output\_geo\_replication)
 
 Description: contains geo replication configuration
+
+### <a name="output_instance"></a> [instance](#output\_instance)
+
+Description: contains all managed redis configuration
 <!-- END_TF_DOCS -->
 
 ## Goals
@@ -160,7 +166,7 @@ To update the module's documentation run `make doc`
 
 ## Authors
 
-Module is maintained by [these awesome contributors](https://github.com/cloudnationhq/terraform-azure-$ResourceName/graphs/contributors).
+Module is maintained by [these awesome contributors](https://github.com/cloudnationhq/terraform-azure-amr/graphs/contributors).
 
 ## Contributors
 
@@ -168,8 +174,8 @@ We welcome contributions from the community! Whether it's reporting a bug, sugge
 
 For more information, please see our contribution [guidelines](./CONTRIBUTING.md). <br><br>
 
-<a href="https://github.com/cloudnationhq/terraform-azure-$ResourceName/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=cloudnationhq/terraform-azure-$ResourceName" />
+<a href="https://github.com/cloudnationhq/terraform-azure-amr/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=cloudnationhq/terraform-azure-amr" />
 </a>
 
 ## License
@@ -178,6 +184,6 @@ MIT Licensed. See [LICENSE](./LICENSE) for full details.
 
 ## References
 
-- [Documentation](https://learn.microsoft.com/en-us/azure/$ResourceName/)
-- [Rest Api](https://learn.microsoft.com/en-us/rest/api/$ResourceName/)
-- [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/tree/1f449b5a17448f05ce1cd914f8ed75a0b568d130/specification/$rResourceName)
+- [Documentation](https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/managed-redis/managed-redis-overview)
+- [Rest Api](https://learn.microsoft.com/en-us/rest/api/redis/)
+- [Rest Api Specs](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis)

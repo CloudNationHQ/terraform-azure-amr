@@ -18,7 +18,8 @@ module "rg" {
 }
 
 module "cache" {
-  source = "../.."
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 1.0"
 
   instance = {
     name                = module.naming.managed_redis.name_unique

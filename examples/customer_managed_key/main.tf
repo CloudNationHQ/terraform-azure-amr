@@ -50,13 +50,6 @@ module "kv" {
         key_type = "RSA"
         key_size = 2048
         key_opts = ["unwrapKey", "wrapKey"]
-
-        role_assignments = {
-          crypto_user = {
-            role_definition_name = "Key Vault Crypto User"
-            principal_id         = module.identity.config.principal_id
-          }
-        }
       }
     }
   }
@@ -67,8 +60,30 @@ module "kv" {
   }
 }
 
+module "rbac" {
+  source  = "cloudnationhq/rbac/azure"
+  version = "~>  2.0"
+
+  role_assignments = {
+    crypto_user = {
+      display_name = module.identity.config.name
+      type  = "ServicePrincipal"
+      roles = {
+        "Key Vault Crypto User" = {
+          scopes = {
+            kv-vault = module.kv.vault.id
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [ module.identity ]
+}
+
 module "cache" {
-  source = "../.."
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 1.0"
 
   instance = {
     name                = module.naming.managed_redis.name_unique
