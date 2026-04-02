@@ -1,3 +1,5 @@
+data "azurerm_client_config" "current" {}
+
 module "naming" {
   source  = "cloudnationhq/naming/azure"
   version = "~> 0.26"
@@ -28,6 +30,12 @@ module "cache" {
     sku_name            = "Balanced_B1"
 
     default_database = {}
+
+    access_policy_assignments = {
+      owner = {
+        object_id = data.azurerm_client_config.current.object_id
+      }
+    }
   }
 
   tags = {
