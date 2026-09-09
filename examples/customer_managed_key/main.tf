@@ -80,7 +80,8 @@ module "rbac" {
 }
 
 module "cache" {
-  source = "../../"
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 2.0"
 
   cache = {
     name                = module.naming.managed_redis.name_unique
@@ -99,10 +100,5 @@ module "cache" {
       key_vault_key_id          = module.kv.keys.demo.id
       user_assigned_identity_id = module.identity.identity.id
     }
-  }
-
-  tags = {
-    environment = "demo"
-    repository  = "terraform-azure-amr"
   }
 }

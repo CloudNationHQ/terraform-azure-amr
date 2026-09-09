@@ -18,7 +18,8 @@ module "rg" {
 }
 
 module "cache_secondary" {
-  source = "../../"
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 2.0"
 
   cache = {
     name                = "${module.naming.managed_redis.name_unique}-sec"
@@ -30,15 +31,11 @@ module "cache_secondary" {
       geo_replication_group_name = "demo-geo-group"
     }
   }
-
-  tags = {
-    environment = "demo"
-    repository  = "terraform-azure-amr"
-  }
 }
 
 module "cache_primary" {
-  source = "../../"
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 2.0"
 
   cache = {
     name                = module.naming.managed_redis.name_unique
@@ -53,10 +50,5 @@ module "cache_primary" {
     geo_replication = {
       linked_managed_redis_ids = [module.cache_secondary.cache.id]
     }
-  }
-
-  tags = {
-    environment = "demo"
-    repository  = "terraform-azure-amr"
   }
 }

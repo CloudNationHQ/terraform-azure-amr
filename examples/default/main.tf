@@ -18,7 +18,8 @@ module "rg" {
 }
 
 module "cache" {
-  source = "../../"
+  source  = "cloudnationhq/amr/azure"
+  version = "~> 2.0"
 
   cache = {
     name                = module.naming.managed_redis.name_unique
@@ -27,10 +28,5 @@ module "cache" {
     sku_name            = "Balanced_B1"
 
     default_database = {}
-  }
-
-  tags = {
-    environment = "demo"
-    repository  = "terraform-azure-amr"
   }
 }
