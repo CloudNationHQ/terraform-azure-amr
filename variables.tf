@@ -1,19 +1,19 @@
-variable "instance" {
+variable "cache" {
   description = "contains managed redis cache related configuration"
   type = object({
     name                      = string
     resource_group_name       = optional(string)
     location                  = optional(string)
     sku_name                  = string
-    high_availability_enabled = optional(bool, true)
-    public_network_access     = optional(string, "Enabled")
+    high_availability_enabled = optional(bool)
+    public_network_access     = optional(string)
     tags                      = optional(map(string))
 
     default_database = optional(object({
-      access_keys_authentication_enabled            = optional(bool, false)
-      client_protocol                               = optional(string, "Encrypted")
-      clustering_policy                             = optional(string, "OSSCluster")
-      eviction_policy                               = optional(string, "VolatileLRU")
+      access_keys_authentication_enabled            = optional(bool)
+      client_protocol                               = optional(string)
+      clustering_policy                             = optional(string)
+      eviction_policy                               = optional(string)
       geo_replication_group_name                    = optional(string)
       persistence_append_only_file_backup_frequency = optional(string)
       persistence_redis_database_backup_frequency   = optional(string)
@@ -41,6 +41,16 @@ variable "instance" {
       linked_managed_redis_ids = set(string)
     }))
   })
+
+  validation {
+    condition     = lookup(var.cache, "location", null) != null || var.location != null
+    error_message = "location must be set on var.cache.location or on the module-level var.location."
+  }
+
+  validation {
+    condition     = lookup(var.cache, "resource_group_name", null) != null || var.resource_group_name != null
+    error_message = "resource_group_name must be set on var.cache.resource_group_name or on the module-level var.resource_group_name."
+  }
 }
 
 variable "location" {
