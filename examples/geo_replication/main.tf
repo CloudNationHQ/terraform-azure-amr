@@ -18,8 +18,7 @@ module "rg" {
 }
 
 module "cache_secondary" {
-  source  = "cloudnationhq/amr/azure"
-  version = "~> 2.0"
+  source = "../../"
 
   cache = {
     name                = "${module.naming.managed_redis.name_unique}-sec"
@@ -34,8 +33,7 @@ module "cache_secondary" {
 }
 
 module "cache_primary" {
-  source  = "cloudnationhq/amr/azure"
-  version = "~> 2.0"
+  source = "../../"
 
   cache = {
     name                = module.naming.managed_redis.name_unique
