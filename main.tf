@@ -1,24 +1,22 @@
 # managed redis
 resource "azurerm_managed_redis" "this" {
-  name = var.instance.name
+  name = var.cache.name
 
   resource_group_name = coalesce(
-    lookup(var.instance, "resource_group_name", null),
-    var.resource_group_name
+    var.cache.resource_group_name, var.resource_group_name
   )
 
   location = coalesce(
-    lookup(var.instance, "location", null),
-    var.location
+    var.cache.location, var.location
   )
 
-  sku_name                  = var.instance.sku_name
-  high_availability_enabled = var.instance.high_availability_enabled
-  public_network_access     = var.instance.public_network_access
-  tags                      = coalesce(var.instance.tags, var.tags)
+  sku_name                  = var.cache.sku_name
+  high_availability_enabled = var.cache.high_availability_enabled
+  public_network_access     = var.cache.public_network_access
+  tags                      = coalesce(var.cache.tags, var.tags)
 
   dynamic "default_database" {
-    for_each = var.instance.default_database != null ? { "default" = var.instance.default_database } : {}
+    for_each = var.cache.default_database != null ? { "this" = var.cache.default_database } : {}
 
     content {
       access_keys_authentication_enabled            = default_database.value.access_keys_authentication_enabled
@@ -42,7 +40,7 @@ resource "azurerm_managed_redis" "this" {
   }
 
   dynamic "customer_managed_key" {
-    for_each = var.instance.customer_managed_key != null ? { "default" = var.instance.customer_managed_key } : {}
+    for_each = var.cache.customer_managed_key != null ? { "this" = var.cache.customer_managed_key } : {}
 
     content {
       key_vault_key_id          = customer_managed_key.value.key_vault_key_id
@@ -51,7 +49,7 @@ resource "azurerm_managed_redis" "this" {
   }
 
   dynamic "identity" {
-    for_each = var.instance.identity != null ? [var.instance.identity] : []
+    for_each = var.cache.identity != null ? { "this" = var.cache.identity } : {}
 
     content {
       type         = identity.value.type
@@ -60,17 +58,15 @@ resource "azurerm_managed_redis" "this" {
   }
 }
 
-# access policy assignments
-resource "azurerm_managed_redis_access_policy_assignment" "assignments" {
-  for_each = var.instance.access_policy_assignments
+resource "azurerm_managed_redis_access_policy_assignment" "this" {
+  for_each = var.cache.access_policy_assignments
 
   managed_redis_id = azurerm_managed_redis.this.id
   object_id        = each.value.object_id
 }
 
-# geo replication
-resource "azurerm_managed_redis_geo_replication" "geo_replication" {
-  for_each = var.instance.geo_replication != null ? { "default" = var.instance.geo_replication } : {}
+resource "azurerm_managed_redis_geo_replication" "this" {
+  for_each = var.cache.geo_replication != null ? { "default" = var.cache.geo_replication } : {}
 
   managed_redis_id         = azurerm_managed_redis.this.id
   linked_managed_redis_ids = each.value.linked_managed_redis_ids

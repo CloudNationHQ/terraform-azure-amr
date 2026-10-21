@@ -25,27 +25,27 @@ The following requirements are needed by this module:
 
 - <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) (~> 1.0)
 
-- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 4.0)
+- <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) (~> 5.0)
 
 ## Providers
 
 The following providers are used by this module:
 
-- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 4.0)
+- <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) (~> 5.0)
 
 ## Resources
 
 The following resources are used by this module:
 
 - [azurerm_managed_redis.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis) (resource)
-- [azurerm_managed_redis_access_policy_assignment.assignments](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_access_policy_assignment) (resource)
-- [azurerm_managed_redis_geo_replication.geo_replication](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_geo_replication) (resource)
+- [azurerm_managed_redis_access_policy_assignment.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_access_policy_assignment) (resource)
+- [azurerm_managed_redis_geo_replication.this](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/managed_redis_geo_replication) (resource)
 
 ## Required Inputs
 
 The following input variables are required:
 
-### <a name="input_instance"></a> [instance](#input\_instance)
+### <a name="input_cache"></a> [cache](#input\_cache)
 
 Description: contains managed redis cache related configuration
 
@@ -57,15 +57,15 @@ object({
     resource_group_name       = optional(string)
     location                  = optional(string)
     sku_name                  = string
-    high_availability_enabled = optional(bool, true)
-    public_network_access     = optional(string, "Enabled")
+    high_availability_enabled = optional(bool)
+    public_network_access     = optional(string)
     tags                      = optional(map(string))
 
     default_database = optional(object({
-      access_keys_authentication_enabled            = optional(bool, false)
-      client_protocol                               = optional(string, "Encrypted")
-      clustering_policy                             = optional(string, "OSSCluster")
-      eviction_policy                               = optional(string, "VolatileLRU")
+      access_keys_authentication_enabled            = optional(bool)
+      client_protocol                               = optional(string)
+      clustering_policy                             = optional(string)
+      eviction_policy                               = optional(string)
       geo_replication_group_name                    = optional(string)
       persistence_append_only_file_backup_frequency = optional(string)
       persistence_redis_database_backup_frequency   = optional(string)
@@ -86,7 +86,7 @@ object({
     }))
 
     access_policy_assignments = optional(map(object({
-      object_id          = string
+      object_id = string
     })), {})
 
     geo_replication = optional(object({
@@ -131,13 +131,13 @@ The following outputs are exported:
 
 Description: contains all access policy assignments
 
+### <a name="output_cache"></a> [cache](#output\_cache)
+
+Description: contains all managed redis configuration
+
 ### <a name="output_geo_replication"></a> [geo\_replication](#output\_geo\_replication)
 
 Description: contains geo replication configuration
-
-### <a name="output_instance"></a> [instance](#output\_instance)
-
-Description: contains all managed redis configuration
 <!-- END_TF_DOCS -->
 
 ## Goals
